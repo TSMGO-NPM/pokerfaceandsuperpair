@@ -18,7 +18,7 @@
         .card-scene {
             width: 80px;
             height: 120px;
-            perspective: 1000px; /* 增加透視感 */
+            perspective: 1000px;
         }
 
         @media (min-width: 768px) {
@@ -38,11 +38,11 @@
             height: 100%;
             transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
             transform-style: preserve-3d;
-            transform: rotateY(180deg); /* 初始顯示背面 */
+            transform: rotateY(180deg);
         }
 
         .card-inner.is-flipped {
-            transform: rotateY(0deg); /* 翻轉到正面 */
+            transform: rotateY(0deg);
         }
 
         .card-front, .card-back {
@@ -131,7 +131,7 @@
                             </ul>
                         </div>
                         <div class="bg-slate-50 p-5 rounded-2xl border border-slate-100">
-                            <h3 class="font-bold text-slate-800 mb-3">準則及賠率 (僅看首4張)</h3>
+                            <h3 class="font-bold text-slate-800 mb-3">賠率(僅看首4張牌)</h3>
                             <div class="grid grid-cols-1 gap-3 text-sm">
                                 <div class="bg-white p-4 rounded-xl shadow-sm flex justify-between items-center border-l-4 border-emerald-500">
                                     <p class="text-emerald-700 font-bold">4張皆為人形牌</p>
@@ -152,7 +152,6 @@
                     </div>
                     
                     <div id="flower-cards" class="flex gap-4 min-h-[160px] items-center justify-center">
-                        <!-- Initial Placeholders -->
                         <div class="card-scene"><div class="card-inner"><div class="card-back text-slate-500 font-bold text-2xl">1</div></div></div>
                         <div class="card-scene"><div class="card-inner"><div class="card-back text-slate-500 font-bold text-2xl">2</div></div></div>
                         <div class="card-scene"><div class="card-inner"><div class="card-back text-slate-500 font-bold text-2xl">3</div></div></div>
@@ -181,11 +180,11 @@
                         <div class="bg-indigo-50 p-5 rounded-2xl border-l-4 border-indigo-500">
                             <h3 class="font-bold text-indigo-900 mb-2">● 超級對子定義</h3>
                             <p class="text-indigo-800 text-sm leading-relaxed">
-                                庄家或閒家各自的「首兩張牌」點數完全相同，即視為該方出現對子。
+                                庄家和閒家各自的「首兩張牌」點數完全相同。
                             </p>
                         </div>
                         <div class="space-y-3">
-                            <h3 class="font-bold text-slate-800 mb-3">● 賠率詳細列表</h3>
+                            <h3 class="font-bold text-slate-800 mb-3">● 賠率(僅看首4張牌)</h3>
                             <div class="space-y-3">
                                 <div class="flex justify-between items-center p-4 bg-white rounded-xl border border-slate-100 shadow-sm">
                                     <span class="font-medium">僅一方為對子</span>
@@ -254,7 +253,7 @@
                     <p class="font-bold text-white text-base mb-2">補充：</p>
                     <ul class="grid md:grid-cols-2 gap-x-8 gap-y-2 opacity-80">
                         <li class="flex gap-2"><span>1.</span> 「花牌至尊」、「超級對子」僅判斷每局首發之四張啤牌。</li>
-                        <li class="flex gap-2"><span>3.</span> 「超級對子」點數計算以牌面數值為準（如 J=J, 10=10）。</li>
+                        <li class="flex gap-2"><span>2.</span> 「超級對子」點數計算以牌面數值為準（如 J=J, 10=10）。</li>
                     </ul>
                 </div>
             </div>
@@ -265,6 +264,7 @@
         let isAnimating = false;
         const courtCards = ['J', 'Q', 'K'];
         const regularCards = ['A', '2', '3', '4', '5', '6', '7', '8', '9', '10'];
+        const allCards = [...regularCards, ...courtCards];
         const suits = ['♠', '♥', '♣', '♦'];
 
         function switchTab(tab) {
@@ -312,14 +312,21 @@
             isAnimating = false;
         }
 
-        function getRandomCard(type) {
-            const list = type === 'court' ? courtCards : regularCards;
-            const value = list[Math.floor(Math.random() * list.length)];
+        function getRandomCard(typeOrValue) {
+            let value;
+            if (typeOrValue === 'court') {
+                value = courtCards[Math.floor(Math.random() * courtCards.length)];
+            } else if (typeOrValue === 'regular') {
+                value = regularCards[Math.floor(Math.random() * regularCards.length)];
+            } else if (typeOrValue === 'any') {
+                value = allCards[Math.floor(Math.random() * allCards.length)];
+            } else {
+                value = typeOrValue; // 固定點數
+            }
             const suit = suits[Math.floor(Math.random() * suits.length)];
             return { value, suit, isRed: suit === '♥' || suit === '♦' };
         }
 
-        // 修改：確保傳入的 ID 能正確綁定並觸發翻轉
         function getCardMarkup(card, id, extraClass = "") {
             const color = card.isRed ? 'text-red-500' : 'text-black';
             return `
@@ -337,7 +344,6 @@
         }
 
         function flipCard(id) {
-            // 使用 requestAnimationFrame 確保元素已渲染
             requestAnimationFrame(() => {
                 requestAnimationFrame(() => {
                     const el = document.getElementById(id);
@@ -355,7 +361,17 @@
             let cards = [];
             if (mode === 'win_50') cards = Array(4).fill(0).map(() => getRandomCard('court'));
             else if (mode === 'win_1') cards = Array(4).fill(0).map(() => getRandomCard('regular'));
-            else cards = [getRandomCard('court'), getRandomCard('regular'), getRandomCard('court'), getRandomCard('regular')];
+            else {
+                // 混合模式隨機生成
+                for(let i=0; i<4; i++) {
+                    cards.push(getRandomCard(Math.random() > 0.5 ? 'court' : 'regular'));
+                }
+                // 如果運氣太好全中，強制把最後一張改掉
+                const allCourt = cards.every(c => courtCards.includes(c.value));
+                const allRegular = cards.every(c => regularCards.includes(c.value));
+                if (allCourt) cards[3] = getRandomCard('regular');
+                if (allRegular) cards[3] = getRandomCard('court');
+            }
 
             cards.forEach((card, index) => {
                 setTimeout(() => {
@@ -380,7 +396,7 @@
             let result = "";
             if (allCourt) result = `<div class="animate__animated animate__tada text-3xl font-black text-yellow-600">中獎：1 賠 50</div><div class="font-bold text-slate-500">【全人形組合】</div>`;
             else if (allRegular) result = `<div class="animate__animated animate__rubberBand text-3xl font-black text-emerald-600">中獎：1 賠 1</div><div class="font-bold text-slate-500">【全數字組合】</div>`;
-            else result = `<div class="text-2xl font-black text-slate-400">未獲獎</div><div class="text-slate-500 font-medium">混合牌型</div>`;
+            else result = `<div class="text-2xl font-black text-slate-400">未中獎</div><div class="text-slate-500 font-medium">混合牌型</div>`;
             document.getElementById('flower-result').innerHTML = result;
         }
 
@@ -392,16 +408,34 @@
             document.getElementById('pair-banker-cards').innerHTML = '';
 
             let p1, p2, b1, b2;
+            
             if (mode === 'win_300') {
-                const v = regularCards[Math.floor(Math.random() * regularCards.length)];
-                p1 = { value: v, suit: '♠' }; p2 = { value: v, suit: '♥' };
-                b1 = { value: v, suit: '♣' }; b2 = { value: v, suit: '♦' };
+                // 莊閒對子且點數完全相同
+                const val = allCards[Math.floor(Math.random() * allCards.length)];
+                p1 = getRandomCard(val); p2 = getRandomCard(val);
+                b1 = getRandomCard(val); b2 = getRandomCard(val);
+                // 確保花色不完全重複（雖然百家樂多副牌沒關係，但演示上美觀點）
+                p1.suit = '♠'; p2.suit = '♥'; b1.suit = '♣'; b2.suit = '♦';
             } else if (mode === 'win_30') {
-                p1 = { value: '8', suit: '♠' }; p2 = { value: '8', suit: '♥' };
-                b1 = { value: '2', suit: '♣' }; b2 = { value: '2', suit: '♦' };
+                // 雙方皆對子但點數不同
+                const valP = allCards[Math.floor(Math.random() * allCards.length)];
+                let valB = allCards[Math.floor(Math.random() * allCards.length)];
+                while(valB === valP) valB = allCards[Math.floor(Math.random() * allCards.length)];
+                p1 = getRandomCard(valP); p2 = getRandomCard(valP);
+                b1 = getRandomCard(valB); b2 = getRandomCard(valB);
             } else {
-                p1 = { value: 'A', suit: '♠' }; p2 = { value: 'A', suit: '♥' };
-                b1 = { value: '3', suit: '♣' }; b2 = { value: '4', suit: '♦' };
+                // 僅一方對子
+                const valPair = allCards[Math.floor(Math.random() * allCards.length)];
+                const isPlayer = Math.random() > 0.5;
+                if(isPlayer) {
+                    p1 = getRandomCard(valPair); p2 = getRandomCard(valPair);
+                    b1 = getRandomCard('any'); b2 = getRandomCard('any');
+                    while(b1.value === b2.value) b2 = getRandomCard('any'); // 確保另一邊不是對子
+                } else {
+                    b1 = getRandomCard(valPair); b2 = getRandomCard(valPair);
+                    p1 = getRandomCard('any'); p2 = getRandomCard('any');
+                    while(p1.value === p2.value) p2 = getRandomCard('any');
+                }
             }
 
             const sequence = [
@@ -434,11 +468,11 @@
             let result = "";
 
             if (pPair && bPair && p1.value === b1.value) {
-                result = `<div class="animate__animated animate__tada text-4xl font-black text-yellow-600">中獎：1 賠 300</div><div class="font-bold text-orange-600">【完美超級對子】庄閒皆同點</div>`;
+                result = `<div class="animate__animated animate__tada text-4xl font-black text-yellow-600">中獎：1 賠 300</div><div class="font-bold text-orange-600">【超級對子】庄閒皆同點</div>`;
             } else if (pPair && bPair) {
                 result = `<div class="animate__animated animate__pulse text-3xl font-black text-indigo-700">中獎：1 賠 30</div><div class="font-bold text-slate-500">庄閒皆為對子 (點數不同)</div>`;
             } else if (pPair || bPair) {
-                result = `<div class="text-3xl font-black text-blue-600">中獎：1 賠 3</div><div class="font-bold text-slate-500">單方對子獲獎</div>`;
+                result = `<div class="text-3xl font-black text-blue-600">中獎：1 賠 3</div><div class="font-bold text-slate-500">${pPair ? '閒家' : '庄家'}對子獲獎</div>`;
             } else {
                 result = `<div class="text-2xl font-black text-slate-400">未獲獎</div><div class="font-medium text-slate-500">雙方均無對子</div>`;
             }
