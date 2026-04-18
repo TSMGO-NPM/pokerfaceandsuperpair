@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>百家樂附加投注 SOP 教學網站</title>
+    <title>百家樂附加投注教學網站</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" rel="stylesheet">
     <style>
@@ -149,7 +149,6 @@
                 <div class="lg:col-span-3 bg-white rounded-2xl shadow-sm border border-slate-200 p-8 flex flex-col items-center justify-between min-h-[500px]">
                     <div class="flex items-center justify-between w-full text-slate-700 font-bold mb-8">
                         <span class="text-xl">▶️ 翻牌動畫演示</span>
-                        <span class="text-xs text-slate-400 uppercase tracking-tighter">Sequence: B1, P1, B2, P2</span>
                     </div>
                     
                     <div id="flower-cards" class="flex gap-4 min-h-[160px] items-center justify-center">
@@ -176,13 +175,13 @@
             <div class="grid lg:grid-cols-5 gap-6">
                 <div class="lg:col-span-2 bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
                     <div class="bg-indigo-700 text-white p-5 font-bold flex items-center gap-2 text-lg">
-                        <span>👥 規則定義</span>
+                        <span>ℹ️ 規則定義</span>
                     </div>
                     <div class="p-6 space-y-6">
                         <div class="bg-indigo-50 p-5 rounded-2xl border-l-4 border-indigo-500">
                             <h3 class="font-bold text-indigo-900 mb-2">● 超級對子定義</h3>
                             <p class="text-indigo-800 text-sm leading-relaxed">
-                                莊家或閑家各自的「首兩張牌」點數完全相同，即視為該方出現對子。
+                                庄家或閒家各自的「首兩張牌」點數完全相同，即視為該方出現對子。
                             </p>
                         </div>
                         <div class="space-y-3">
@@ -207,11 +206,11 @@
 
                 <div class="lg:col-span-3 bg-white rounded-2xl shadow-sm border border-slate-200 p-8 flex flex-col items-center justify-between min-h-[500px]">
                     <div class="w-full flex flex-col gap-10 mt-4">
-                        <!-- 閑家區域 -->
+                        <!-- 閒家區域 -->
                         <div class="space-y-4">
                             <div class="flex items-center justify-center gap-4">
                                 <span class="h-px bg-blue-200 flex-1"></span>
-                                <div class="text-sm font-black text-blue-600 tracking-widest uppercase bg-blue-50 px-4 py-1 rounded-full">閑家 PLAYER</div>
+                                <div class="text-sm font-black text-blue-600 tracking-widest uppercase bg-blue-50 px-4 py-1 rounded-full">閒家 PLAYER</div>
                                 <span class="h-px bg-blue-200 flex-1"></span>
                             </div>
                             <div id="pair-player-cards" class="flex justify-center gap-8 min-h-[165px]">
@@ -220,11 +219,11 @@
                             </div>
                         </div>
 
-                        <!-- 莊家區域 -->
+                        <!-- 庄家區域 -->
                         <div class="space-y-4">
                             <div class="flex items-center justify-center gap-4">
                                 <span class="h-px bg-red-200 flex-1"></span>
-                                <div class="text-sm font-black text-red-600 tracking-widest uppercase bg-red-50 px-4 py-1 rounded-full">莊家 BANKER</div>
+                                <div class="text-sm font-black text-red-600 tracking-widest uppercase bg-red-50 px-4 py-1 rounded-full">庄家 BANKER</div>
                                 <span class="h-px bg-red-200 flex-1"></span>
                             </div>
                             <div id="pair-banker-cards" class="flex justify-center gap-8 min-h-[165px]">
@@ -252,12 +251,10 @@
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
                 </div>
                 <div>
-                    <p class="font-bold text-white text-base mb-2">專業操作指引：</p>
+                    <p class="font-bold text-white text-base mb-2">補充：</p>
                     <ul class="grid md:grid-cols-2 gap-x-8 gap-y-2 opacity-80">
-                        <li class="flex gap-2"><span>1.</span> 「花牌至尊」附加投注僅限判斷每局首發之四張啤牌。</li>
-                        <li class="flex gap-2"><span>2.</span> 啤牌發放順序為：莊(1) ➔ 閑(1) ➔ 莊(2) ➔ 閑(2)。</li>
+                        <li class="flex gap-2"><span>1.</span> 「花牌至尊」、「超級對子」的附加投注僅限判斷每局首發之四張啤牌。</li>
                         <li class="flex gap-2"><span>3.</span> 「超級對子」點數計算以牌面數值為準（如 J=J, 10=10）。</li>
-                        <li class="flex gap-2"><span>4.</span> 同時達成雙方對子且數值相等時，派彩賠率最高。</li>
                     </ul>
                 </div>
             </div>
@@ -408,10 +405,10 @@
             }
 
             const sequence = [
-                {card: b1, target: 'pair-banker-cards'},
                 {card: p1, target: 'pair-player-cards'},
-                {card: b2, target: 'pair-banker-cards'},
-                {card: p2, target: 'pair-player-cards'}
+                {card: b1, target: 'pair-banker-cards'},
+                {card: p2, target: 'pair-player-cards'},
+                {card: b2, target: 'pair-banker-cards'}
             ];
 
             sequence.forEach((item, index) => {
@@ -437,9 +434,9 @@
             let result = "";
 
             if (pPair && bPair && p1.value === b1.value) {
-                result = `<div class="animate__animated animate__tada text-4xl font-black text-yellow-600">中獎：1 賠 300</div><div class="font-bold text-orange-600">【完美超級對子】莊閑皆同點</div>`;
+                result = `<div class="animate__animated animate__tada text-4xl font-black text-yellow-600">中獎：1 賠 300</div><div class="font-bold text-orange-600">【完美超級對子】庄閒皆同點</div>`;
             } else if (pPair && bPair) {
-                result = `<div class="animate__animated animate__pulse text-3xl font-black text-indigo-700">中獎：1 賠 30</div><div class="font-bold text-slate-500">莊閑皆為對子 (點數不同)</div>`;
+                result = `<div class="animate__animated animate__pulse text-3xl font-black text-indigo-700">中獎：1 賠 30</div><div class="font-bold text-slate-500">庄閒皆為對子 (點數不同)</div>`;
             } else if (pPair || bPair) {
                 result = `<div class="text-3xl font-black text-blue-600">中獎：1 賠 3</div><div class="font-bold text-slate-500">單方對子獲獎</div>`;
             } else {
