@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>百家樂附加投注教學網站</title>
+    <title>百家樂附加投注教學</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" rel="stylesheet">
     <style>
@@ -117,29 +117,23 @@
                         <span>ℹ️ 規則定義</span>
                     </div>
                     <div class="p-6 space-y-6">
-                        <div>
-                            <h3 class="font-bold text-slate-800 mb-3 flex items-center gap-2">
-                                <span class="w-1.5 h-6 bg-emerald-500 rounded-full"></span> 牌種定義
-                            </h3>
-                            <ul class="space-y-3 ml-4">
-                                <li class="flex items-center gap-2 text-slate-600">
-                                    <span class="font-bold text-emerald-700 bg-emerald-50 px-2 py-1 rounded">人形牌</span> J、Q、K
-                                </li>
-                                <li class="flex items-center gap-2 text-slate-600">
-                                    <span class="font-bold text-slate-700 bg-slate-100 px-2 py-1 rounded">非人形牌</span> A、2、3...10
-                                </li>
+                        <div class="bg-emerald-50 p-5 rounded-2xl border-l-4 border-emerald-500">
+                            <h3 class="font-bold text-emerald-900 mb-2">● 牌種定義</h3>
+                            <ul class="space-y-1 text-emerald-800 text-sm">
+                                <li>• <strong>人形牌：</strong>J、Q、K</li>
+                                <li>• <strong>非人形牌：</strong>A、2、3...10</li>
                             </ul>
                         </div>
-                        <div class="bg-slate-50 p-5 rounded-2xl border border-slate-100">
-                            <h3 class="font-bold text-slate-800 mb-3">賠率(僅看首4張牌)</h3>
-                            <div class="grid grid-cols-1 gap-3 text-sm">
-                                <div class="bg-white p-4 rounded-xl shadow-sm flex justify-between items-center border-l-4 border-emerald-500">
-                                    <p class="text-emerald-700 font-bold">4張皆為人形牌</p>
-                                    <p class="text-2xl font-black">1 賠 50</p>
+                        <div class="space-y-3">
+                            <h3 class="font-bold text-slate-800 mb-3">● 賠率(僅看首4張牌)</h3>
+                            <div class="space-y-3">
+                                <div class="flex justify-between items-center p-4 bg-white rounded-xl border border-slate-100 shadow-sm">
+                                    <span class="font-medium text-emerald-700">4張皆為人形牌</span>
+                                    <span class="font-black text-emerald-600 text-xl">1 賠 50</span>
                                 </div>
-                                <div class="bg-white p-4 rounded-xl shadow-sm flex justify-between items-center border-l-4 border-slate-400">
-                                    <p class="text-slate-700 font-bold">4張皆為非人形牌</p>
-                                    <p class="text-2xl font-black">1 賠 1</p>
+                                <div class="flex justify-between items-center p-4 bg-slate-50/50 rounded-xl border border-slate-100 shadow-sm">
+                                    <span class="font-medium text-slate-700">4張皆為非人形牌</span>
+                                    <span class="font-black text-slate-600 text-xl">1 賠 1</span>
                                 </div>
                             </div>
                         </div>
@@ -147,23 +141,40 @@
                 </div>
 
                 <div class="lg:col-span-3 bg-white rounded-2xl shadow-sm border border-slate-200 p-8 flex flex-col items-center justify-between min-h-[500px]">
-                    <div class="flex items-center justify-between w-full text-slate-700 font-bold mb-8">
-                        <span class="text-xl">▶️ 翻牌動畫演示</span>
-                    </div>
-                    
-                    <div id="flower-cards" class="flex gap-4 min-h-[160px] items-center justify-center">
-                        <div class="card-scene"><div class="card-inner"><div class="card-back text-slate-500 font-bold text-2xl">1</div></div></div>
-                        <div class="card-scene"><div class="card-inner"><div class="card-back text-slate-500 font-bold text-2xl">2</div></div></div>
-                        <div class="card-scene"><div class="card-inner"><div class="card-back text-slate-500 font-bold text-2xl">3</div></div></div>
-                        <div class="card-scene"><div class="card-inner"><div class="card-back text-slate-500 font-bold text-2xl">4</div></div></div>
+                    <div class="w-full flex flex-col gap-10 mt-4">
+                        <!-- 閒家區域 -->
+                        <div class="space-y-4">
+                            <div class="flex items-center justify-center gap-4">
+                                <span class="h-px bg-blue-200 flex-1"></span>
+                                <div class="text-sm font-black text-blue-600 tracking-widest uppercase bg-blue-50 px-4 py-1 rounded-full">閒家 PLAYER</div>
+                                <span class="h-px bg-blue-200 flex-1"></span>
+                            </div>
+                            <div id="flower-player-cards" class="flex justify-center gap-8 min-h-[165px]">
+                                <div class="card-scene pair-scene"><div class="card-inner"><div class="card-back text-slate-400 font-bold">P1</div></div></div>
+                                <div class="card-scene pair-scene"><div class="card-inner"><div class="card-back text-slate-400 font-bold">P2</div></div></div>
+                            </div>
+                        </div>
+
+                        <!-- 庄家區域 -->
+                        <div class="space-y-4">
+                            <div class="flex items-center justify-center gap-4">
+                                <span class="h-px bg-red-200 flex-1"></span>
+                                <div class="text-sm font-black text-red-600 tracking-widest uppercase bg-red-50 px-4 py-1 rounded-full">庄家 BANKER</div>
+                                <span class="h-px bg-red-200 flex-1"></span>
+                            </div>
+                            <div id="flower-banker-cards" class="flex justify-center gap-8 min-h-[165px]">
+                                <div class="card-scene pair-scene"><div class="card-inner"><div class="card-back text-slate-400 font-bold">B1</div></div></div>
+                                <div class="card-scene pair-scene"><div class="card-inner"><div class="card-back text-slate-400 font-bold">B2</div></div></div>
+                            </div>
+                        </div>
                     </div>
 
-                    <div id="flower-result" class="text-center h-20 flex flex-col justify-center"></div>
+                    <div id="flower-result" class="text-center h-20 flex flex-col justify-center my-4"></div>
 
-                    <div class="grid grid-cols-3 gap-3 w-full max-w-md">
-                        <button onclick="simulateFlower('win_50')" class="py-3 bg-yellow-500 hover:bg-yellow-600 text-white rounded-xl font-bold transition-all shadow-md shadow-yellow-200">全人形</button>
-                        <button onclick="simulateFlower('win_1')" class="py-3 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl font-bold transition-all shadow-md shadow-emerald-200">全數字</button>
-                        <button onclick="simulateFlower('mix')" class="py-3 bg-slate-400 hover:bg-slate-500 text-white rounded-xl font-bold transition-all shadow-md shadow-slate-200">混合</button>
+                    <div class="grid grid-cols-3 gap-3 w-full max-w-lg">
+                        <button onclick="simulateFlower('win_50')" class="py-4 bg-yellow-500 hover:bg-yellow-600 text-white rounded-xl font-bold transition-all shadow-md shadow-yellow-200">全人形</button>
+                        <button onclick="simulateFlower('win_1')" class="py-4 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl font-bold transition-all shadow-md shadow-emerald-200">全數字</button>
+                        <button onclick="simulateFlower('mix')" class="py-4 bg-slate-400 hover:bg-slate-500 text-white rounded-xl font-bold transition-all shadow-md shadow-slate-200">混合</button>
                     </div>
                 </div>
             </div>
@@ -252,8 +263,8 @@
                 <div>
                     <p class="font-bold text-white text-base mb-2">補充：</p>
                     <ul class="grid md:grid-cols-2 gap-x-8 gap-y-2 opacity-80">
-                        <li class="flex gap-2"><span>1.</span> 「花牌至尊」、「超級對子」僅判斷每局首發之四張啤牌。</li>
-                        <li class="flex gap-2"><span>2.</span> 「超級對子」點數計算以牌面數值為準（如 J=J, 10=10）。</li>
+                        <li class="flex gap-2"><span>1.</span> 「花牌至尊」、「超級對子」僅判斷首發的四張牌。</li>
+                        <li class="flex gap-2"><span>2.</span> 派牌順序：閒1 -> 庄1 -> 閒2 -> 庄2。</li>
                     </ul>
                 </div>
             </div>
@@ -293,11 +304,13 @@
         }
 
         function resetDisplays() {
-            document.getElementById('flower-cards').innerHTML = `
-                <div class="card-scene"><div class="card-inner"><div class="card-back text-slate-500 font-bold text-2xl">1</div></div></div>
-                <div class="card-scene"><div class="card-inner"><div class="card-back text-slate-500 font-bold text-2xl">2</div></div></div>
-                <div class="card-scene"><div class="card-inner"><div class="card-back text-slate-500 font-bold text-2xl">3</div></div></div>
-                <div class="card-scene"><div class="card-inner"><div class="card-back text-slate-500 font-bold text-2xl">4</div></div></div>
+            document.getElementById('flower-player-cards').innerHTML = `
+                <div class="card-scene pair-scene"><div class="card-inner"><div class="card-back text-slate-400 font-bold">P1</div></div></div>
+                <div class="card-scene pair-scene"><div class="card-inner"><div class="card-back text-slate-400 font-bold">P2</div></div></div>
+            `;
+            document.getElementById('flower-banker-cards').innerHTML = `
+                <div class="card-scene pair-scene"><div class="card-inner"><div class="card-back text-slate-400 font-bold">B1</div></div></div>
+                <div class="card-scene pair-scene"><div class="card-inner"><div class="card-back text-slate-400 font-bold">B2</div></div></div>
             `;
             document.getElementById('pair-player-cards').innerHTML = `
                 <div class="card-scene pair-scene"><div class="card-inner"><div class="card-back text-slate-400 font-bold">P1</div></div></div>
@@ -321,7 +334,7 @@
             } else if (typeOrValue === 'any') {
                 value = allCards[Math.floor(Math.random() * allCards.length)];
             } else {
-                value = typeOrValue; // 固定點數
+                value = typeOrValue;
             }
             const suit = suits[Math.floor(Math.random() * suits.length)];
             return { value, suit, isRed: suit === '♥' || suit === '♦' };
@@ -356,28 +369,34 @@
             if (isAnimating) return;
             isAnimating = true;
             document.getElementById('flower-result').innerHTML = '';
-            document.getElementById('flower-cards').innerHTML = '';
+            document.getElementById('flower-player-cards').innerHTML = '';
+            document.getElementById('flower-banker-cards').innerHTML = '';
             
             let cards = [];
             if (mode === 'win_50') cards = Array(4).fill(0).map(() => getRandomCard('court'));
             else if (mode === 'win_1') cards = Array(4).fill(0).map(() => getRandomCard('regular'));
             else {
-                // 混合模式隨機生成
                 for(let i=0; i<4; i++) {
                     cards.push(getRandomCard(Math.random() > 0.5 ? 'court' : 'regular'));
                 }
-                // 如果運氣太好全中，強制把最後一張改掉
                 const allCourt = cards.every(c => courtCards.includes(c.value));
                 const allRegular = cards.every(c => regularCards.includes(c.value));
                 if (allCourt) cards[3] = getRandomCard('regular');
                 if (allRegular) cards[3] = getRandomCard('court');
             }
 
-            cards.forEach((card, index) => {
+            const sequence = [
+                {card: cards[0], target: 'flower-player-cards'}, // 閒1
+                {card: cards[1], target: 'flower-banker-cards'}, // 庄1
+                {card: cards[2], target: 'flower-player-cards'}, // 閒2
+                {card: cards[3], target: 'flower-banker-cards'}  // 庄2
+            ];
+
+            sequence.forEach((item, index) => {
                 setTimeout(() => {
                     const cardId = `flower-card-${index}`;
-                    const container = document.getElementById('flower-cards');
-                    container.insertAdjacentHTML('beforeend', getCardMarkup(card, cardId));
+                    const container = document.getElementById(item.target);
+                    container.insertAdjacentHTML('beforeend', getCardMarkup(item.card, cardId, "pair-scene"));
                     flipCard(cardId);
 
                     if (index === 3) {
@@ -396,7 +415,7 @@
             let result = "";
             if (allCourt) result = `<div class="animate__animated animate__tada text-3xl font-black text-yellow-600">中獎：1 賠 50</div><div class="font-bold text-slate-500">【全人形組合】</div>`;
             else if (allRegular) result = `<div class="animate__animated animate__rubberBand text-3xl font-black text-emerald-600">中獎：1 賠 1</div><div class="font-bold text-slate-500">【全數字組合】</div>`;
-            else result = `<div class="text-2xl font-black text-slate-400">未中獎</div><div class="text-slate-500 font-medium">混合牌型</div>`;
+            else result = `<div class="text-2xl font-black text-slate-400">未中</div><div class="text-slate-500 font-medium">混合牌型</div>`;
             document.getElementById('flower-result').innerHTML = result;
         }
 
@@ -410,27 +429,23 @@
             let p1, p2, b1, b2;
             
             if (mode === 'win_300') {
-                // 莊閒對子且點數完全相同
                 const val = allCards[Math.floor(Math.random() * allCards.length)];
                 p1 = getRandomCard(val); p2 = getRandomCard(val);
                 b1 = getRandomCard(val); b2 = getRandomCard(val);
-                // 確保花色不完全重複（雖然百家樂多副牌沒關係，但演示上美觀點）
                 p1.suit = '♠'; p2.suit = '♥'; b1.suit = '♣'; b2.suit = '♦';
             } else if (mode === 'win_30') {
-                // 雙方皆對子但點數不同
                 const valP = allCards[Math.floor(Math.random() * allCards.length)];
                 let valB = allCards[Math.floor(Math.random() * allCards.length)];
                 while(valB === valP) valB = allCards[Math.floor(Math.random() * allCards.length)];
                 p1 = getRandomCard(valP); p2 = getRandomCard(valP);
                 b1 = getRandomCard(valB); b2 = getRandomCard(valB);
             } else {
-                // 僅一方對子
                 const valPair = allCards[Math.floor(Math.random() * allCards.length)];
                 const isPlayer = Math.random() > 0.5;
                 if(isPlayer) {
                     p1 = getRandomCard(valPair); p2 = getRandomCard(valPair);
                     b1 = getRandomCard('any'); b2 = getRandomCard('any');
-                    while(b1.value === b2.value) b2 = getRandomCard('any'); // 確保另一邊不是對子
+                    while(b1.value === b2.value) b2 = getRandomCard('any');
                 } else {
                     b1 = getRandomCard(valPair); b2 = getRandomCard(valPair);
                     p1 = getRandomCard('any'); p2 = getRandomCard('any');
@@ -474,7 +489,7 @@
             } else if (pPair || bPair) {
                 result = `<div class="text-3xl font-black text-blue-600">中獎：1 賠 3</div><div class="font-bold text-slate-500">${pPair ? '閒家' : '庄家'}對子獲獎</div>`;
             } else {
-                result = `<div class="text-2xl font-black text-slate-400">未獲獎</div><div class="font-medium text-slate-500">雙方均無對子</div>`;
+                result = `<div class="text-2xl font-black text-slate-400">未中</div><div class="font-medium text-slate-500">雙方均無對子</div>`;
             }
             document.getElementById('pair-result').innerHTML = result;
         }
