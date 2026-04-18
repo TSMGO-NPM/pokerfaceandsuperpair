@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>百家樂附加投注 SOP 教學網站</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" rel="stylesheet">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&display=swap');
+        
+        body {
+            font-family: 'Noto Sans TC', sans-serif;
+            background-color: #f1f5f9;
+        }
+
+        /* 3D 翻牌動畫效果 */
+        .card-scene {
+            width: 80px;
+            height: 120px;
+            perspective: 1000px; /* 增加透視感 */
+        }
+
+        @media (min-width: 768px) {
+            .card-scene {
+                width: 100px;
+                height: 150px;
+            }
+            .pair-scene {
+                width: 110px;
+                height: 165px;
+            }
+        }
+
+        .card-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+            transform-style: preserve-3d;
+            transform: rotateY(180deg); /* 初始顯示背面 */
+        }
+
+        .card-inner.is-flipped {
+            transform: rotateY(0deg); /* 翻轉到正面 */
+        }
+
+        .card-front, .card-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            border-radius: 12px;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            padding: 10px;
+            border: 1px solid #e2e8f0;
+        }
+
+        .card-front {
+            background: white;
+            color: black;
+            transform: rotateY(0deg);
+        }
+
+        .card-back {
+            background: #1e293b;
+            background-image: radial-gradient(#334155 1.5px, transparent 1.5px);
+            background-size: 10px 10px;
+            transform: rotateY(180deg);
+            border-color: #334155;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .tab-active {
+            background-color: white;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+            color: #1e293b;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        button:active {
+            transform: scale(0.95);
+        }
+    </style>
+</head>
+<body class="p-4 md:p-8">
+
+    <header class="max-w-5xl mx-auto mb-8 text-center">
+        <h1 class="text-3xl md:text-5xl font-black text-slate-800 mb-2">百家樂附加投注 SOP</h1>
+        <p class="text-slate-500 font-medium tracking-widest uppercase text-sm">Baccarat Side Bets Animation Guide</p>
+    </header>
+
+    <main class="max-w-5xl mx-auto">
+        <!-- Tabs List -->
+        <div class="flex p-1.5 bg-slate-200 rounded-xl mb-8 shadow-inner">
+            <button id="tab-flower-btn" onclick="switchTab('flower')" class="flex-1 py-4 text-lg font-bold rounded-lg transition-all tab-active">
+                1. 花牌至尊
+            </button>
+            <button id="tab-pair-btn" onclick="switchTab('pair')" class="flex-1 py-4 text-lg font-bold rounded-lg transition-all text-slate-500">
+                2. 超級對子
+            </button>
+        </div>
+
+        <!-- 花牌至尊 Section -->
+        <section id="flower-section" class="space-y-6 animate__animated animate__fadeIn">
+            <div class="grid lg:grid-cols-5 gap-6">
+                <div class="lg:col-span-2 bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
+                    <div class="bg-emerald-600 text-white p-5 font-bold flex items-center gap-2 text-lg">
+                        <span>ℹ️ 規則定義</span>
+                    </div>
+                    <div class="p-6 space-y-6">
+                        <div>
+                            <h3 class="font-bold text-slate-800 mb-3 flex items-center gap-2">
+                                <span class="w-1.5 h-6 bg-emerald-500 rounded-full"></span> 牌種定義
+                            </h3>
+                            <ul class="space-y-3 ml-4">
+                                <li class="flex items-center gap-2 text-slate-600">
+                                    <span class="font-bold text-emerald-700 bg-emerald-50 px-2 py-1 rounded">人形牌</span> J、Q、K
+                                </li>
+                                <li class="flex items-center gap-2 text-slate-600">
+                                    <span class="font-bold text-slate-700 bg-slate-100 px-2 py-1 rounded">非人形牌</span> A、2、3...10
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="bg-slate-50 p-5 rounded-2xl border border-slate-100">
+                            <h3 class="font-bold text-slate-800 mb-3">準則及賠率 (僅看首4張)</h3>
+                            <div class="grid grid-cols-1 gap-3 text-sm">
+                                <div class="bg-white p-4 rounded-xl shadow-sm flex justify-between items-center border-l-4 border-emerald-500">
+                                    <p class="text-emerald-700 font-bold">4張皆為人形牌</p>
+                                    <p class="text-2xl font-black">1 賠 50</p>
+                                </div>
+                                <div class="bg-white p-4 rounded-xl shadow-sm flex justify-between items-center border-l-4 border-slate-400">
+                                    <p class="text-slate-700 font-bold">4張皆為非人形牌</p>
+                                    <p class="text-2xl font-black">1 賠 1</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="lg:col-span-3 bg-white rounded-2xl shadow-sm border border-slate-200 p-8 flex flex-col items-center justify-between min-h-[500px]">
+                    <div class="flex items-center justify-between w-full text-slate-700 font-bold mb-8">
+                        <span class="text-xl">▶️ 翻牌動畫演示</span>
+                        <span class="text-xs text-slate-400 uppercase tracking-tighter">Sequence: B1, P1, B2, P2</span>
+                    </div>
+                    
+                    <div id="flower-cards" class="flex gap-4 min-h-[160px] items-center justify-center">
+                        <!-- Initial Placeholders -->
+                        <div class="card-scene"><div class="card-inner"><div class="card-back text-slate-500 font-bold text-2xl">1</div></div></div>
+                        <div class="card-scene"><div class="card-inner"><div class="card-back text-slate-500 font-bold text-2xl">2</div></div></div>
+                        <div class="card-scene"><div class="card-inner"><div class="card-back text-slate-500 font-bold text-2xl">3</div></div></div>
+                        <div class="card-scene"><div class="card-inner"><div class="card-back text-slate-500 font-bold text-2xl">4</div></div></div>
+                    </div>
+
+                    <div id="flower-result" class="text-center h-20 flex flex-col justify-center"></div>
+
+                    <div class="grid grid-cols-3 gap-3 w-full max-w-md">
+                        <button onclick="simulateFlower('win_50')" class="py-3 bg-yellow-500 hover:bg-yellow-600 text-white rounded-xl font-bold transition-all shadow-md shadow-yellow-200">全人形</button>
+                        <button onclick="simulateFlower('win_1')" class="py-3 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl font-bold transition-all shadow-md shadow-emerald-200">全數字</button>
+                        <button onclick="simulateFlower('mix')" class="py-3 bg-slate-400 hover:bg-slate-500 text-white rounded-xl font-bold transition-all shadow-md shadow-slate-200">混合</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 超級對子 Section -->
+        <section id="pair-section" class="hidden space-y-6 animate__animated animate__fadeIn">
+            <div class="grid lg:grid-cols-5 gap-6">
+                <div class="lg:col-span-2 bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
+                    <div class="bg-indigo-700 text-white p-5 font-bold flex items-center gap-2 text-lg">
+                        <span>👥 規則定義</span>
+                    </div>
+                    <div class="p-6 space-y-6">
+                        <div class="bg-indigo-50 p-5 rounded-2xl border-l-4 border-indigo-500">
+                            <h3 class="font-bold text-indigo-900 mb-2">● 超級對子定義</h3>
+                            <p class="text-indigo-800 text-sm leading-relaxed">
+                                莊家或閑家各自的「首兩張牌」點數完全相同，即視為該方出現對子。
+                            </p>
+                        </div>
+                        <div class="space-y-3">
+                            <h3 class="font-bold text-slate-800 mb-3">● 賠率詳細列表</h3>
+                            <div class="space-y-3">
+                                <div class="flex justify-between items-center p-4 bg-white rounded-xl border border-slate-100 shadow-sm">
+                                    <span class="font-medium">僅一方為對子</span>
+                                    <span class="font-black text-indigo-600 text-xl">1 賠 3</span>
+                                </div>
+                                <div class="flex justify-between items-center p-4 bg-indigo-50/50 rounded-xl border border-indigo-100 shadow-sm">
+                                    <span class="font-bold text-indigo-900">雙方皆對子 (點數不同)</span>
+                                    <span class="font-black text-indigo-700 text-xl">1 賠 30</span>
+                                </div>
+                                <div class="flex justify-between items-center p-4 bg-yellow-50 rounded-xl border border-yellow-200 shadow-md">
+                                    <span class="font-black text-yellow-900">雙方皆對子 (點數相同)</span>
+                                    <span class="font-black text-yellow-600 text-3xl">1 賠 300</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="lg:col-span-3 bg-white rounded-2xl shadow-sm border border-slate-200 p-8 flex flex-col items-center justify-between min-h-[500px]">
+                    <div class="w-full flex flex-col gap-10 mt-4">
+                        <!-- 閑家區域 -->
+                        <div class="space-y-4">
+                            <div class="flex items-center justify-center gap-4">
+                                <span class="h-px bg-blue-200 flex-1"></span>
+                                <div class="text-sm font-black text-blue-600 tracking-widest uppercase bg-blue-50 px-4 py-1 rounded-full">閑家 PLAYER</div>
+                                <span class="h-px bg-blue-200 flex-1"></span>
+                            </div>
+                            <div id="pair-player-cards" class="flex justify-center gap-8 min-h-[165px]">
+                                <div class="card-scene pair-scene"><div class="card-inner"><div class="card-back text-slate-400 font-bold">P1</div></div></div>
+                                <div class="card-scene pair-scene"><div class="card-inner"><div class="card-back text-slate-400 font-bold">P2</div></div></div>
+                            </div>
+                        </div>
+
+                        <!-- 莊家區域 -->
+                        <div class="space-y-4">
+                            <div class="flex items-center justify-center gap-4">
+                                <span class="h-px bg-red-200 flex-1"></span>
+                                <div class="text-sm font-black text-red-600 tracking-widest uppercase bg-red-50 px-4 py-1 rounded-full">莊家 BANKER</div>
+                                <span class="h-px bg-red-200 flex-1"></span>
+                            </div>
+                            <div id="pair-banker-cards" class="flex justify-center gap-8 min-h-[165px]">
+                                <div class="card-scene pair-scene"><div class="card-inner"><div class="card-back text-slate-400 font-bold">B1</div></div></div>
+                                <div class="card-scene pair-scene"><div class="card-inner"><div class="card-back text-slate-400 font-bold">B2</div></div></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="pair-result" class="text-center h-20 flex flex-col justify-center my-4"></div>
+
+                    <div class="grid grid-cols-2 gap-3 w-full max-w-lg">
+                        <button onclick="simulatePairs('win_3')" class="py-4 bg-blue-600 hover:bg-blue-700 text-white rounded-xl font-bold shadow-lg shadow-blue-200">單方對子 (3倍)</button>
+                        <button onclick="simulatePairs('win_30')" class="py-4 bg-indigo-700 hover:bg-indigo-800 text-white rounded-xl font-bold shadow-lg shadow-indigo-200">雙方對子 (30倍)</button>
+                        <button onclick="simulatePairs('win_300')" class="col-span-2 py-4 bg-gradient-to-r from-yellow-500 via-orange-500 to-red-500 hover:from-yellow-600 hover:to-red-600 text-white rounded-xl font-black text-xl shadow-xl shadow-orange-200 transform transition hover:-translate-y-1">完美超級對子 (300倍)</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="mt-8 bg-slate-800 text-slate-400 p-8 rounded-2xl text-sm leading-relaxed border border-slate-700 shadow-2xl">
+            <div class="flex items-start gap-4">
+                <div class="bg-slate-700 p-2 rounded-lg text-blue-400">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+                </div>
+                <div>
+                    <p class="font-bold text-white text-base mb-2">專業操作指引：</p>
+                    <ul class="grid md:grid-cols-2 gap-x-8 gap-y-2 opacity-80">
+                        <li class="flex gap-2"><span>1.</span> 「花牌至尊」附加投注僅限判斷每局首發之四張啤牌。</li>
+                        <li class="flex gap-2"><span>2.</span> 啤牌發放順序為：莊(1) ➔ 閑(1) ➔ 莊(2) ➔ 閑(2)。</li>
+                        <li class="flex gap-2"><span>3.</span> 「超級對子」點數計算以牌面數值為準（如 J=J, 10=10）。</li>
+                        <li class="flex gap-2"><span>4.</span> 同時達成雙方對子且數值相等時，派彩賠率最高。</li>
+                    </ul>
+                </div>
+            </div>
+        </footer>
+    </main>
+
+    <script>
+        let isAnimating = false;
+        const courtCards = ['J', 'Q', 'K'];
+        const regularCards = ['A', '2', '3', '4', '5', '6', '7', '8', '9', '10'];
+        const suits = ['♠', '♥', '♣', '♦'];
+
+        function switchTab(tab) {
+            if (isAnimating) return;
+            const flowerBtn = document.getElementById('tab-flower-btn');
+            const pairBtn = document.getElementById('tab-pair-btn');
+            const flowerSec = document.getElementById('flower-section');
+            const pairSec = document.getElementById('pair-section');
+
+            if (tab === 'flower') {
+                flowerBtn.classList.add('tab-active');
+                flowerBtn.classList.remove('text-slate-500');
+                pairBtn.classList.remove('tab-active');
+                pairBtn.classList.add('text-slate-500');
+                flowerSec.classList.remove('hidden');
+                pairSec.classList.add('hidden');
+            } else {
+                pairBtn.classList.add('tab-active');
+                pairBtn.classList.remove('text-slate-500');
+                flowerBtn.classList.remove('tab-active');
+                flowerBtn.classList.add('text-slate-500');
+                pairSec.classList.remove('hidden');
+                flowerSec.classList.add('hidden');
+            }
+            resetDisplays();
+        }
+
+        function resetDisplays() {
+            document.getElementById('flower-cards').innerHTML = `
+                <div class="card-scene"><div class="card-inner"><div class="card-back text-slate-500 font-bold text-2xl">1</div></div></div>
+                <div class="card-scene"><div class="card-inner"><div class="card-back text-slate-500 font-bold text-2xl">2</div></div></div>
+                <div class="card-scene"><div class="card-inner"><div class="card-back text-slate-500 font-bold text-2xl">3</div></div></div>
+                <div class="card-scene"><div class="card-inner"><div class="card-back text-slate-500 font-bold text-2xl">4</div></div></div>
+            `;
+            document.getElementById('pair-player-cards').innerHTML = `
+                <div class="card-scene pair-scene"><div class="card-inner"><div class="card-back text-slate-400 font-bold">P1</div></div></div>
+                <div class="card-scene pair-scene"><div class="card-inner"><div class="card-back text-slate-400 font-bold">P2</div></div></div>
+            `;
+            document.getElementById('pair-banker-cards').innerHTML = `
+                <div class="card-scene pair-scene"><div class="card-inner"><div class="card-back text-slate-400 font-bold">B1</div></div></div>
+                <div class="card-scene pair-scene"><div class="card-inner"><div class="card-back text-slate-400 font-bold">B2</div></div></div>
+            `;
+            document.getElementById('flower-result').innerHTML = '';
+            document.getElementById('pair-result').innerHTML = '';
+            isAnimating = false;
+        }
+
+        function getRandomCard(type) {
+            const list = type === 'court' ? courtCards : regularCards;
+            const value = list[Math.floor(Math.random() * list.length)];
+            const suit = suits[Math.floor(Math.random() * suits.length)];
+            return { value, suit, isRed: suit === '♥' || suit === '♦' };
+        }
+
+        // 修改：確保傳入的 ID 能正確綁定並觸發翻轉
+        function getCardMarkup(card, id, extraClass = "") {
+            const color = card.isRed ? 'text-red-500' : 'text-black';
+            return `
+                <div class="card-scene ${extraClass}">
+                    <div class="card-inner" id="${id}">
+                        <div class="card-back"></div>
+                        <div class="card-front ${color}">
+                            <div class="text-lg font-black leading-none">${card.value}</div>
+                            <div class="text-4xl self-center">${card.suit}</div>
+                            <div class="text-lg font-black leading-none self-end rotate-180">${card.value}</div>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function flipCard(id) {
+            // 使用 requestAnimationFrame 確保元素已渲染
+            requestAnimationFrame(() => {
+                requestAnimationFrame(() => {
+                    const el = document.getElementById(id);
+                    if (el) el.classList.add('is-flipped');
+                });
+            });
+        }
+
+        function simulateFlower(mode) {
+            if (isAnimating) return;
+            isAnimating = true;
+            document.getElementById('flower-result').innerHTML = '';
+            document.getElementById('flower-cards').innerHTML = '';
+            
+            let cards = [];
+            if (mode === 'win_50') cards = Array(4).fill(0).map(() => getRandomCard('court'));
+            else if (mode === 'win_1') cards = Array(4).fill(0).map(() => getRandomCard('regular'));
+            else cards = [getRandomCard('court'), getRandomCard('regular'), getRandomCard('court'), getRandomCard('regular')];
+
+            cards.forEach((card, index) => {
+                setTimeout(() => {
+                    const cardId = `flower-card-${index}`;
+                    const container = document.getElementById('flower-cards');
+                    container.insertAdjacentHTML('beforeend', getCardMarkup(card, cardId));
+                    flipCard(cardId);
+
+                    if (index === 3) {
+                        setTimeout(() => {
+                            isAnimating = false;
+                            showFlowerResult(cards);
+                        }, 800);
+                    }
+                }, (index + 1) * 500);
+            });
+        }
+
+        function showFlowerResult(cards) {
+            const allCourt = cards.every(c => courtCards.includes(c.value));
+            const allRegular = cards.every(c => regularCards.includes(c.value));
+            let result = "";
+            if (allCourt) result = `<div class="animate__animated animate__tada text-3xl font-black text-yellow-600">中獎：1 賠 50</div><div class="font-bold text-slate-500">【全人形組合】</div>`;
+            else if (allRegular) result = `<div class="animate__animated animate__rubberBand text-3xl font-black text-emerald-600">中獎：1 賠 1</div><div class="font-bold text-slate-500">【全數字組合】</div>`;
+            else result = `<div class="text-2xl font-black text-slate-400">未獲獎</div><div class="text-slate-500 font-medium">混合牌型</div>`;
+            document.getElementById('flower-result').innerHTML = result;
+        }
+
+        function simulatePairs(mode) {
+            if (isAnimating) return;
+            isAnimating = true;
+            document.getElementById('pair-result').innerHTML = '';
+            document.getElementById('pair-player-cards').innerHTML = '';
+            document.getElementById('pair-banker-cards').innerHTML = '';
+
+            let p1, p2, b1, b2;
+            if (mode === 'win_300') {
+                const v = regularCards[Math.floor(Math.random() * regularCards.length)];
+                p1 = { value: v, suit: '♠' }; p2 = { value: v, suit: '♥' };
+                b1 = { value: v, suit: '♣' }; b2 = { value: v, suit: '♦' };
+            } else if (mode === 'win_30') {
+                p1 = { value: '8', suit: '♠' }; p2 = { value: '8', suit: '♥' };
+                b1 = { value: '2', suit: '♣' }; b2 = { value: '2', suit: '♦' };
+            } else {
+                p1 = { value: 'A', suit: '♠' }; p2 = { value: 'A', suit: '♥' };
+                b1 = { value: '3', suit: '♣' }; b2 = { value: '4', suit: '♦' };
+            }
+
+            const sequence = [
+                {card: b1, target: 'pair-banker-cards'},
+                {card: p1, target: 'pair-player-cards'},
+                {card: b2, target: 'pair-banker-cards'},
+                {card: p2, target: 'pair-player-cards'}
+            ];
+
+            sequence.forEach((item, index) => {
+                setTimeout(() => {
+                    const cardId = `pair-card-${index}`;
+                    const container = document.getElementById(item.target);
+                    container.insertAdjacentHTML('beforeend', getCardMarkup(item.card, cardId, "pair-scene"));
+                    flipCard(cardId);
+
+                    if (index === 3) {
+                        setTimeout(() => {
+                            isAnimating = false;
+                            showPairResult(p1, p2, b1, b2);
+                        }, 800);
+                    }
+                }, (index + 1) * 500);
+            });
+        }
+
+        function showPairResult(p1, p2, b1, b2) {
+            const pPair = p1.value === p2.value;
+            const bPair = b1.value === b2.value;
+            let result = "";
+
+            if (pPair && bPair && p1.value === b1.value) {
+                result = `<div class="animate__animated animate__tada text-4xl font-black text-yellow-600">中獎：1 賠 300</div><div class="font-bold text-orange-600">【完美超級對子】莊閑皆同點</div>`;
+            } else if (pPair && bPair) {
+                result = `<div class="animate__animated animate__pulse text-3xl font-black text-indigo-700">中獎：1 賠 30</div><div class="font-bold text-slate-500">莊閑皆為對子 (點數不同)</div>`;
+            } else if (pPair || bPair) {
+                result = `<div class="text-3xl font-black text-blue-600">中獎：1 賠 3</div><div class="font-bold text-slate-500">單方對子獲獎</div>`;
+            } else {
+                result = `<div class="text-2xl font-black text-slate-400">未獲獎</div><div class="font-medium text-slate-500">雙方均無對子</div>`;
+            }
+            document.getElementById('pair-result').innerHTML = result;
+        }
+    </script>
+</body>
+</html>
