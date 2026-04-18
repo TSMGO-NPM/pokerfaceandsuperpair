@@ -14,7 +14,6 @@
             background-color: #f1f5f9;
         }
 
-        /* 3D 翻牌動畫效果 */
         .card-scene {
             width: 80px;
             height: 120px;
@@ -191,7 +190,7 @@
                         <div class="bg-indigo-50 p-5 rounded-2xl border-l-4 border-indigo-500">
                             <h3 class="font-bold text-indigo-900 mb-2">● 超級對子定義</h3>
                             <p class="text-indigo-800 text-sm leading-relaxed">
-                                庄家和閒家各自的「首兩張牌」點數完全相同。
+                                庄家和閒家的「首兩張牌」點數完全相同。
                             </p>
                         </div>
                         <div class="space-y-3">
@@ -245,7 +244,7 @@
 
                     <div id="pair-result" class="text-center h-20 flex flex-col justify-center my-4"></div>
 
-                    <div class="grid grid-cols-2 gap-3 w-full max-w-lg">
+                    <div class="grid grid-cols-2 gap-3 w-full max-lg">
                         <button onclick="simulatePairs('win_3')" class="py-4 bg-blue-600 hover:bg-blue-700 text-white rounded-xl font-bold shadow-lg shadow-blue-200">單邊對 (3倍)</button>
                         <button onclick="simulatePairs('win_30')" class="py-4 bg-indigo-700 hover:bg-indigo-800 text-white rounded-xl font-bold shadow-lg shadow-indigo-200">兩邊對 (30倍)</button>
                         <button onclick="simulatePairs('win_300')" class="col-span-2 py-4 bg-gradient-to-r from-yellow-500 via-orange-500 to-red-500 hover:from-yellow-600 hover:to-red-600 text-white rounded-xl font-black text-xl shadow-xl shadow-orange-200 transform transition hover:-translate-y-1">超級對子 (300倍)</button>
@@ -253,11 +252,12 @@
                 </div>
             </div>
         </section>
-
-        <footer class="flex justify-center items-center">
-            <p>Copyright © 2026 GNEM</p>
-        </footer>
     </main>
+
+    <!-- Final Copyright Footer -->
+    <footer class="py-6 text-center text-slate-500 text-sm border-t border-slate-200 max-w-5xl mx-auto w-full">
+        <p>Copyright © 2026 GNEM</p>
+    </footer>
 
     <script>
         let isAnimating = false;
@@ -325,16 +325,19 @@
                 value = typeOrValue;
             }
             const suit = suits[Math.floor(Math.random() * suits.length)];
-            return { value, suit, isRed: suit === '♥' || suit === '♦' };
+            
+            const isRed = (suit === '♥' || suit === '♦');
+            
+            return { value, suit, isRed };
         }
 
         function getCardMarkup(card, id, extraClass = "") {
-            const color = card.isRed ? 'text-red-500' : 'text-black';
+            const colorClass = card.isRed ? 'text-red-500' : 'text-black';
             return `
                 <div class="card-scene ${extraClass}">
                     <div class="card-inner" id="${id}">
                         <div class="card-back"></div>
-                        <div class="card-front ${color}">
+                        <div class="card-front ${colorClass}">
                             <div class="text-lg font-black leading-none">${card.value}</div>
                             <div class="text-4xl self-center">${card.suit}</div>
                             <div class="text-lg font-black leading-none self-end rotate-180">${card.value}</div>
@@ -420,7 +423,11 @@
                 const val = allCards[Math.floor(Math.random() * allCards.length)];
                 p1 = getRandomCard(val); p2 = getRandomCard(val);
                 b1 = getRandomCard(val); b2 = getRandomCard(val);
-                p1.suit = '♠'; p2.suit = '♥'; b1.suit = '♣'; b2.suit = '♦';
+
+                p1.suit = '♠'; p1.isRed = false;
+                p2.suit = '♥'; p2.isRed = true;
+                b1.suit = '♣'; b1.isRed = false;
+                b2.suit = '♦'; b2.isRed = true;
             } else if (mode === 'win_30') {
                 const valP = allCards[Math.floor(Math.random() * allCards.length)];
                 let valB = allCards[Math.floor(Math.random() * allCards.length)];
